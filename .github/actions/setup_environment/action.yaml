@@ -1,0 +1,57 @@
+name: Setup environment
+description: Setup environment for the workflow
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Restore python virtual environment
+      uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
+      with:
+        requirement_files: requirements.txt
+    
+    - name: Restore pip download cache
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+      uses: syphar/restore-pip-download-cache@v1
+
+    - name: Install python dependencies
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Setup node.js
+      id: setup-nodejs
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+
+    - name: Get npm cache directory
+      id: get-npm-cache-dir
+      shell: bash
+      run: |
+        NPM_CACHE_DIR="$(npm config get cache)"
+        echo "NPM_CACHE_DIR=$NPM_CACHE_DIR" >> $GITHUB_OUTPUT
+
+    - name: Restore npm cache
+      id: cache-npm
+      uses: actions/cache@v3
+      with:
+        path: |
+          **/node_modules
+          ${{ steps.get-npm-cache-dir.outputs.NPM_CACHE_DIR }}
+        key: ${{ runner.os }}-npm-${{ steps.setup-nodejs.outputs.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-${{ steps.setup-nodejs.outputs.node-version }}-
+          ${{ runner.os }}-npm-
+
+    - name: Install node.js dependencies
+      if: steps.cache-npm.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+layout pyenv 3.11.0
+
+export STUDIO_TOKEN=
+export GITHUB_TOKEN=

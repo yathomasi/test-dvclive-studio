@@ -1,0 +1,16 @@
+name: Warm up caches for CI runs
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  warm-up-caches:
+    runs-on: ubuntu-latest
+    name: Warming up experiment environment caches
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: (In)validate environment
+        uses: ./.github/actions/setup_environment
