@@ -21,7 +21,7 @@ jobs:
           # https://studio.iterative.ai/api/live is the prod default
           STUDIO_ENDPOINT: ${{ secrets.STUDIO_ENDPOINT }}
           DVCLIVE_LOGLEVEL: DEBUG
-        run: dvc repro
+        run: dvc exp run
 
       - name: Report results
         env:

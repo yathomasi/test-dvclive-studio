@@ -3,4 +3,5 @@
 layout pyenv 3.11.0
 
 export STUDIO_TOKEN=
+export STUDIO_ENDPOINT=
 export GITHUB_TOKEN=
