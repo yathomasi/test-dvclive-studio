@@ -18,17 +18,13 @@ jobs:
       - name: Train model
         env:
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # https://studio.iterative.ai/api/live is the prod default
           STUDIO_ENDPOINT: ${{ secrets.STUDIO_ENDPOINT }}
           DVCLIVE_LOGLEVEL: DEBUG
         run: dvc exp run
 
       - name: Report results
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git fetch --depth=1 origin main:main
           dvc metrics diff main --show-md >> report.md
           npm exec -- cml comment create report.md
           npm exec -- cml pr --rebase "dvc.lock" "params.yaml" "dvclive"
