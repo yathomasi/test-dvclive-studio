@@ -24,6 +24,9 @@ jobs:
         run: dvc exp run
 
       - name: Report results
+        env:
+          # Required for CML: https://cml.dev/doc/self-hosted-runners?tab=GitHub#pat
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dvc metrics diff main --show-md >> report.md
           npm exec -- cml comment create report.md
