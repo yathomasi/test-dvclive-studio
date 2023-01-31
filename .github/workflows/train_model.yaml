@@ -26,7 +26,7 @@ jobs:
       - name: Report results
         env:
           # Required for CML: https://cml.dev/doc/self-hosted-runners?tab=GitHub#pat
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
           dvc metrics diff main --show-md >> report.md
           npm exec -- cml comment create report.md
