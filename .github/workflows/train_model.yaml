@@ -5,6 +5,7 @@ jobs:
   train:
     runs-on: ubuntu-latest
     name: Train model and report results
+    environment: Production
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
@@ -18,8 +19,7 @@ jobs:
       - name: Train model
         env:
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
-          # https://studio.iterative.ai/api/live is the prod default
-          STUDIO_ENDPOINT: ${{ secrets.STUDIO_ENDPOINT }}
+          STUDIO_ENDPOINT: ${{ vars.STUDIO_ENDPOINT }}
           DVCLIVE_LOGLEVEL: DEBUG
         run: dvc exp run
 
