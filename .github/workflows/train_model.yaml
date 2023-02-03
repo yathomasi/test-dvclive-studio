@@ -5,7 +5,7 @@ jobs:
   train:
     runs-on: ubuntu-latest
     name: Train model and report results
-    environment: Production
+    environment: Development
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
