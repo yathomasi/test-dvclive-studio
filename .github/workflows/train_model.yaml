@@ -21,6 +21,7 @@ jobs:
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
           STUDIO_ENDPOINT: ${{ vars.STUDIO_ENDPOINT }}
           DVCLIVE_LOGLEVEL: DEBUG
+          DVC_STUDIO_CLIENT_LOGLEVEL: DEBUG
         run: dvc exp run
 
       - name: Report results
